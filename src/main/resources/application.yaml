@@ -1,0 +1,23 @@
+# Arquivo responsável para configuração do SPRING e banco de dados
+
+# defininão do nome da plicação SPRING
+spring:
+  application:
+    name: produtoStock
+
+# Configuração do Banco de dados H2
+  datasource:
+    url: jdbc:h2:mem:produtostock
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
