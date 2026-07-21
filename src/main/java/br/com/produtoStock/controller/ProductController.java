@@ -1,5 +1,7 @@
 package br.com.produtoStock.controller;
 
+import br.com.produtoStock.dto.ProductRequest;
+import br.com.produtoStock.dto.ProductResponse;
 import br.com.produtoStock.model.Product;
 import br.com.produtoStock.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -19,45 +21,42 @@ public class ProductController {
     }
 
    //POST
-    @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
+   @PostMapping
+   public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest request) {
 
-        Product savedProduct = service.create(product);
+       ProductResponse response = service.create(request);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(savedProduct);
-    }
+       return ResponseEntity
+               .status(HttpStatus.CREATED)
+               .body(response);
+   }
 
     //FIND ALL
     @GetMapping
-    public ResponseEntity<List<Product>> findAll() {
-
-        List<Product> products = service.findAll();
-
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<ProductResponse>> findAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     //find-by-id
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> findById(@PathVariable Long id) {
 
-        Product product = service.findById(id);
+        ProductResponse response = service.findById(id);
 
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(response);
     }
 
 
     //update
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(
+    public ResponseEntity<ProductResponse> update(
             @PathVariable Long id,
-            @RequestBody Product product
+            @RequestBody ProductRequest request
     ) {
 
-        Product updatedProduct = service.update(id, product);
+        ProductResponse response = service.update(id, request);
 
-        return ResponseEntity.ok(updatedProduct);
+        return ResponseEntity.ok(response);
     }
 
     //DELETE

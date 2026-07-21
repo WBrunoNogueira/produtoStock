@@ -1,5 +1,8 @@
 package br.com.produtoStock.service;
 
+import br.com.produtoStock.dto.ProductRequest;
+import br.com.produtoStock.dto.ProductResponse;
+import br.com.produtoStock.mapper.ProductMapper;
 import br.com.produtoStock.model.Product;
 import br.com.produtoStock.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -10,39 +13,54 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository repository;
+    private final ProductMapper mapper;
 
-    public ProductService(ProductRepository repository) {
+    public ProductService(
+            ProductRepository repository,
+            ProductMapper mapper
+    ) {
         this.repository = repository;
+        this.mapper = mapper;
     }
 
+
     //create
-    public Product create(Product product){
-        return repository.save(product);
+    public ProductResponse create(ProductRequest request) {
+
+        Product product = mapper.toEntity(request);
+
+        Product savedProduct = repository.save(product);
+
+        return mapper.toResponse(savedProduct);
     }
 
     //FIND-ALL
-    public List<Product> findAll(){
-        return repository.findAll();
+    public List<ProductResponse> findAll() {
+        return repository.findAll()
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
     }
 
     //FIND-BY-ID
-    public Product findById(Long id) {
-        return repository.findById(id)
-                .orElseThrow();
-    }
+    public ProductResponse findById(Long id) {
 
+        Product product = repository.findById(id)
+                .orElseThrow();
+
+        return mapper.toResponse(product);
+    }
     //update
-    public Product update(Long id, Product product) {
+    public ProductResponse update(Long id, ProductRequest request) {
 
         Product existingProduct = repository.findById(id)
                 .orElseThrow();
 
-        existingProduct.setName(product.getName());
-        existingProduct.setSku(product.getSku());
-        existingProduct.setPrice(product.getPrice());
-        existingProduct.setQuantity(product.getQuantity());
+        mapper.updateEntity(request, existingProduct);
 
-        return repository.save(existingProduct);
+        Product updatedProduct = repository.save(existingProduct);
+
+        return mapper.toResponse(updatedProduct);
     }
 
     //delete
