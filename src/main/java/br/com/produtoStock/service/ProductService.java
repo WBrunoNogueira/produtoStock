@@ -4,6 +4,8 @@ import br.com.produtoStock.model.Product;
 import br.com.produtoStock.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -16,6 +18,11 @@ public class ProductService {
     //create
     public Product create(Product product){
         return repository.save(product);
+    }
+
+    //FIND-ALL
+    public List<Product> findAll(){
+        return repository.findAll();
     }
 
 

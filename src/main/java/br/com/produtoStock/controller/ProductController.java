@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController                   //Define a classe como controller REST
 @RequestMapping("/products")   //definiçaõ do endereço do controller
 public class ProductController {
@@ -24,5 +26,14 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(savedProduct);
+    }
+
+
+    @GetMapping      //FIND ALL
+    public ResponseEntity<List<Product>> findAll() {
+
+        List<Product> products = service.findAll();
+
+        return ResponseEntity.ok(products);
     }
 }
