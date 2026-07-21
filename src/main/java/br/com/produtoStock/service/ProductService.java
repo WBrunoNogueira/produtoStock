@@ -25,6 +25,12 @@ public class ProductService {
         return repository.findAll();
     }
 
+    //FIND-BY-ID
+    public Product findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow();
+    }
+
 
 }
 
