@@ -2,6 +2,7 @@ package br.com.produtoStock.service;
 
 import br.com.produtoStock.dto.ProductRequest;
 import br.com.produtoStock.dto.ProductResponse;
+import br.com.produtoStock.exception.ProductNotFoundException;
 import br.com.produtoStock.mapper.ProductMapper;
 import br.com.produtoStock.model.Product;
 import br.com.produtoStock.repository.ProductRepository;
@@ -46,7 +47,7 @@ public class ProductService {
     public ProductResponse findById(Long id) {
 
         Product product = repository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         return mapper.toResponse(product);
     }
@@ -54,7 +55,7 @@ public class ProductService {
     public ProductResponse update(Long id, ProductRequest request) {
 
         Product existingProduct = repository.findById(id)
-                .orElseThrow();
+               .orElseThrow(() -> new ProductNotFoundException(id));
 
         mapper.updateEntity(request, existingProduct);
 
@@ -67,7 +68,7 @@ public class ProductService {
     public void delete(Long id) {
 
         Product product = repository.findById(id)
-                .orElseThrow();
+               .orElseThrow(() -> new ProductNotFoundException(id));
 
         repository.delete(product);
     }
