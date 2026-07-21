@@ -31,6 +31,20 @@ public class ProductService {
                 .orElseThrow();
     }
 
+    //update
+    public Product update(Long id, Product product) {
+
+        Product existingProduct = repository.findById(id)
+                .orElseThrow();
+
+        existingProduct.setName(product.getName());
+        existingProduct.setSku(product.getSku());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setQuantity(product.getQuantity());
+
+        return repository.save(existingProduct);
+    }
+
 
 }
 
