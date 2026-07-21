@@ -4,6 +4,7 @@ import br.com.produtoStock.dto.ProductRequest;
 import br.com.produtoStock.dto.ProductResponse;
 import br.com.produtoStock.model.Product;
 import br.com.produtoStock.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class ProductController {
 
    //POST
    @PostMapping
-   public ResponseEntity<ProductResponse> create(@RequestBody ProductRequest request) {
+   public ResponseEntity<ProductResponse> create(@Valid @RequestBody ProductRequest request) {
 
        ProductResponse response = service.create(request);
 
@@ -51,7 +52,7 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponse> update(
             @PathVariable Long id,
-            @RequestBody ProductRequest request
+            @Valid  @RequestBody ProductRequest request
     ) {
 
         ProductResponse response = service.update(id, request);
