@@ -18,7 +18,8 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping        //endpont de POST
+   //POST
+    @PostMapping
     public ResponseEntity<Product> create(@RequestBody Product product) {
 
         Product savedProduct = service.create(product);
@@ -28,8 +29,8 @@ public class ProductController {
                 .body(savedProduct);
     }
 
-
-    @GetMapping      //FIND ALL
+    //FIND ALL
+    @GetMapping
     public ResponseEntity<List<Product>> findAll() {
 
         List<Product> products = service.findAll();
@@ -37,7 +38,8 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{id}")  //find-by-id
+    //find-by-id
+    @GetMapping("/{id}")
     public ResponseEntity<Product> findById(@PathVariable Long id) {
 
         Product product = service.findById(id);
@@ -45,7 +47,9 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
-    @PutMapping("/{id}")  //update
+
+    //update
+    @PutMapping("/{id}")
     public ResponseEntity<Product> update(
             @PathVariable Long id,
             @RequestBody Product product
@@ -54,6 +58,15 @@ public class ProductController {
         Product updatedProduct = service.update(id, product);
 
         return ResponseEntity.ok(updatedProduct);
+    }
+
+    //DELETE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
