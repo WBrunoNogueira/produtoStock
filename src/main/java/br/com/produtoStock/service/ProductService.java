@@ -57,11 +57,17 @@ public class ProductService {
 
         return mapper.toResponse(product);
     }
+
     //update
     public ProductResponse update(Long id, ProductRequest request) {
 
         Product existingProduct = repository.findById(id)
                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        //verificação de duplicidae do SKU no update
+        if (repository.existsBySkuAndIdNot(request.sku(), id)) {
+            throw new SkuAlreadyExistsException(request.sku());
+        }
 
         mapper.updateEntity(request, existingProduct);
 
