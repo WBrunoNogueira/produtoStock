@@ -3,6 +3,7 @@ package br.com.produtoStock.service;
 import br.com.produtoStock.dto.ProductRequest;
 import br.com.produtoStock.dto.ProductResponse;
 import br.com.produtoStock.exception.ProductNotFoundException;
+import br.com.produtoStock.exception.SkuAlreadyExistsException;
 import br.com.produtoStock.mapper.ProductMapper;
 import br.com.produtoStock.model.Product;
 import br.com.produtoStock.repository.ProductRepository;
@@ -27,6 +28,11 @@ public class ProductService {
 
     //create
     public ProductResponse create(ProductRequest request) {
+
+        // verificação ja existe um SKU - Lança exeption
+        if (repository.existsBySku((request.sku()))){
+            throw  new SkuAlreadyExistsException((request.sku()));
+        }
 
         Product product = mapper.toEntity(request);
 

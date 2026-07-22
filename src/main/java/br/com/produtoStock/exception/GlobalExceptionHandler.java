@@ -10,9 +10,15 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+
+
+
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+//    ProductNotFoundException
+//    → 404 Not Found
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleProductNotFound(
             ProductNotFoundException exception
@@ -31,6 +37,8 @@ public class GlobalExceptionHandler {
     }
 
 
+//    MethodArgumentNotValidException
+//    → 400 Bad Request
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationErrors(
             MethodArgumentNotValidException exception
@@ -47,5 +55,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errors);
+    }
+
+
+//    SkuAlreadyExistsException
+//    → 409 Conflict
+    @ExceptionHandler(SkuAlreadyExistsException.class)
+    public ResponseEntity<Map<String, Object>> handleSkuAlreadyExists(
+            SkuAlreadyExistsException exception
+    ) {
+
+        Map<String, Object> error = Map.of(
+                "status", HttpStatus.CONFLICT.value(),
+                "error", "Conflict",
+                "message", exception.getMessage(),
+                "timestamp", LocalDateTime.now().toString()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(error);
     }
 }
